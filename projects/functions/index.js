@@ -47,8 +47,7 @@ function sumWithDefaults(a, b) {
 returnFnResult(() => 'привет') вернет 'привет'
 */
 function returnFnResult(fn) {
-  const a = fn();
-  return a;
+  return fn();
 }
 
 /*
@@ -84,8 +83,7 @@ function returnCounter(number) {
 returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
 */
 function returnArgumentsArray() {
-  const array = Array.from(arguments);
-  return array;
+  return [...arguments];
 }
 
 /*
