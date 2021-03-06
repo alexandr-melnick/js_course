@@ -105,8 +105,9 @@ console.log(newSum()) выведет 6
 */
 
 function bindFunction(fn, ...args) {
-  fn = bindFunction.bind(null);
-  return fn();
+  return function () {
+    return fn.call(this, ...args);
+  };
 }
 
 export {
