@@ -40,9 +40,23 @@ function map(array, fn) {
 Пример:
 reduce([1, 2, 3], (all, current) => all + current) // 6
 */
-function reduce(array, fn, initial = 0) {
-  for (let i = 0; i < array.length; i++) {
-    initial = fn(initial, array[i], i, array);
+
+function reduce(array, fn, initial) {
+  let result;
+  if (initial !== undefined) {
+    for (let i = 0; i < array.length; i++) {
+      result = fn(initial, array[i], i, array);
+      initial = result;
+    }
+    return result;
+  }
+  if (initial === undefined) {
+    initial = array[0];
+    for (let i = 1; i < array.length; i++) {
+      result = fn(initial, array[i], i, array);
+      initial = result;
+    }
+    return result;
   }
 }
 
@@ -73,6 +87,20 @@ const obj = createProxy({});
 obj.foo = 2;
 console.log(obj.foo); // 4
 */
-function createProxy(obj) {}
+function createProxy(obj) {
+  const proxy = new Proxy(obj, {
+    set(target, foo, value) {
+      target[foo] = value ** 2;
+      return target[foo];
+    },
+  });
+  return proxy;
+}
 
-export { forEach, map, reduce, upperProps, createProxy };
+export {
+  forEach,
+  map,
+  reduce,
+  upperProps,
+  createProxy
+};
