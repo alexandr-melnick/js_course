@@ -11,28 +11,18 @@ isAllTrue([1, 2, 3, 4, 5], n => n < 10) // вернет true
 isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
 */
 function isAllTrue(array, fn) {
-  if (array.constructor !== Array) {
+  if (array.constructor !== Array || array.length === 0) {
     throw new Error('empty array');
   } else if (typeof fn !== 'function') {
     throw new Error('fn is not a function');
-  } else if (array.length === 0) {
-    throw new Error('empty array');
   }
-  let a = 0;
-  let b = 0;
   for (let i = 0; i < array.length; i++) {
     const func = fn(array[i]);
     if (func === false) {
-      a++;
-    } else if (func === true) {
-      b++;
+      return false;
     }
   }
-  if (array.length === b) {
-    return true;
-  } else if (a > 0) {
-    return false;
-  }
+  return true;
 }
 
 /*
@@ -48,25 +38,18 @@ isSomeTrue([1, 2, 30, 4, 5], n => n > 20) // вернет true
 isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
 */
 function isSomeTrue(array, fn) {
-  if (array.constructor !== Array) {
+  if (array.constructor !== Array || array.length === 0) {
     throw new Error('empty array');
   } else if (typeof fn !== 'function') {
     throw new Error('fn is not a function');
-  } else if (array.length === 0) {
-    throw new Error('empty array');
   }
-  let b = 0;
   for (let i = 0; i < array.length; i++) {
     const func = fn(array[i]);
     if (func === true) {
-      b++;
+      return true;
     }
   }
-  if (b > 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return false;
 }
 
 /*
@@ -81,13 +64,12 @@ function returnBadArguments(fn, ...args) {
   if (typeof fn !== 'function') {
     throw new Error('fn is not a function');
   }
-  const array = [...args];
   const newArray = [];
-  for (let i = 0; i < array.length; i++) {
+  for (let i = 0; i < args.length; i++) {
     try {
-      const func = fn(array[i]);
+      fn(args[i]);
     } catch (e) {
-      newArray.push(array[i]);
+      newArray.push(args[i]);
     }
   }
   return newArray;
