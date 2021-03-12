@@ -43,22 +43,23 @@ reduce([1, 2, 3], (all, current) => all + current) // 6
 
 function reduce(array, fn, initial) {
   let result;
+  let i = 0;
   if (initial === undefined) {
     initial = array[0];
-    array.shift();
+    i = 1;
   }
-  for (let i = 0; i < array.length; i++) {
+  for (i; i < array.length; i++) {
     result = fn(initial, array[i], i, array);
     initial = result;
   }
   return result;
 }
 
-function sum(init, el) {
-  return init + el;
-}
-console.log(reduce([1, 2, 3, 4], sum), "init не задан");
-console.log(reduce([1, 2, 3, 4], sum, 10), "init задан");
+// function sum(init, el) {
+//   return init + el;
+// }
+// console.log(reduce([1, 2, 3, 4], sum), "init не задан");
+// console.log(reduce([1, 2, 3, 4], sum, 10), "init задан");
 /*
 Задание 4:
 
