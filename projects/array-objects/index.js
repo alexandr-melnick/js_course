@@ -91,7 +91,7 @@ function createProxy(obj) {
   const proxy = new Proxy(obj, {
     set(target, foo, value) {
       target[foo] = value ** 2;
-      return target[foo];
+      return ture;
     },
   });
   return proxy;
