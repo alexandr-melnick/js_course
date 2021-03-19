@@ -24,6 +24,7 @@ homeworkContainer.appendChild(newDiv);
 */
 
 import './towns.html';
+import { loadAndSortTowns } from './functions.js';
 
 const homeworkContainer = document.querySelector('#app');
 
@@ -33,16 +34,8 @@ const homeworkContainer = document.querySelector('#app');
 https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
 */
 function loadTowns() {
-  return new Promise((resolve) => {
-    fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
-      .then((response) => response.json())
-      .then((towns) => {
-        const sortTowns = towns.sort((a, b) => {
-          return a.name < b.name ? -1 : 1;
-        });
-        resolve(sortTowns);
-      });
-  });
+  const a = loadAndSortTowns();
+  return a;
 }
 
 /*
@@ -71,28 +64,29 @@ const filterBlock = homeworkContainer.querySelector('#filter-block');
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
-const createUl = document.createElement('ul');
-filterBlock.appendChild(createUl);
+
 loadTowns().then((sortTowns) => {
   filterBlock.style.display = 'block';
   loadingBlock.style.display = 'none';
-  loadingFailedBlock.firstElementChild.style.display = 'none';
+  loadingFailedBlock.style.display = 'none';
   filterInput.addEventListener('input', function (e) {
     const chunk = e.target.value;
     filterResult.textContent = '';
     for (let i = 0; i < sortTowns.length; i++) {
       const item = sortTowns[i].name;
-      if (item.toLowerCase().match(chunk.toLowerCase())) {
+      if (isMatching(item, chunk)) {
         const createDiv = document.createElement('div');
-        createDiv.textContent = item;
+        createDiv.innerHTML = item;
         filterResult.appendChild(createDiv);
       }
       if (!chunk) {
-        filterResult.textContent = '';
+        filterResult.innerHTML = '';
       }
     }
   });
 });
-retryButton.addEventListener('click', () => {});
+retryButton.addEventListener('click', () => {
+  loadTowns();
+});
 
 export { loadTowns, isMatching };
