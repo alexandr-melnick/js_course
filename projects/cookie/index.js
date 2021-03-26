@@ -90,15 +90,15 @@ function parseFilterCookie(filterValue) {
 }
 
 function renderCookie(cookie) {
-  // const fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
   for (const key in cookie) {
     if (key) {
-      const row = listTable.insertRow(listTable.rows.length);
-      const cell = row.insertCell(0);
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
       cell.textContent = key;
-      const cell2 = row.insertCell(1);
+      const cell2 = document.createElement('td');
       cell2.textContent = cookie[key];
-      const cell3 = row.insertCell(2);
+      const cell3 = document.createElement('td');
       const button = document.createElement('button');
       button.textContent = 'Удалить';
       cell3.appendChild(button);
@@ -106,8 +106,13 @@ function renderCookie(cookie) {
         listTable.removeChild(row);
         document.cookie = key + '=;expires=Thu, 01 Jan 2021 00:00:01 GMT;';
       });
+      row.appendChild(cell);
+      row.appendChild(cell2);
+      row.appendChild(cell3);
+      fragment.appendChild(row);
     }
   }
+  listTable.appendChild(fragment);
 }
 
 function filterCookie(cookieParse, isMatching, filterValue) {
