@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+}
+
+.input {
+    outline: transparent;
+}
+
+h2 {
+    margin-bottom: 20px;
+    margin-top: 14px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+.form__input {
+    width: 310px;
+    height: 38px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #CFCFCF;
+    padding: 7px 17px;
+    color: black;
+    font-size: 14px;
+}
+
+textarea {
+    height: 98px !important;
+    resize: none;
+}
+
+
+.form__input:focus {
+    border: 1px solid #1371C8;
+}
+
+.btn {
+    width: 107px;
+    height: 38px;
+    background: #FF8663;
+    border-radius: 3px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    outline: transparent;
+}
+
+.btn:hover {
+    box-shadow: 0 0 10px rgba(255, 134, 99, 0.5);
+    transition: .3s;
+}
+
+.popup__reviews-wrap {
+    max-height: 110px;
+    overflow: scroll;
+}
+
+.reviews__item {
+    /* display: flex; */
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+}
+
+.review__name {
+    font-weight: 700;
+    margin-right: 5px;
+    width: 50%;
+}
+
+.review__place {
+    color: #8F8F8F;
+    width: 50%;
+}
+
+.review__text {
+    color: #8F8F8F;
+}
+
+.popup__reviews {
+    margin-top: 5px;
+    font-weight: 600;
+}
