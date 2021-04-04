@@ -1,0 +1,11 @@
+<div class="popup">
+  <div class="popup__header">{{address}}, {{dateNow}}</div>
+  <div class="popup__reviews-wrap">
+    {{#if items}}
+    {{> reviews items=items}}
+    {{else}}
+    <div class="popup__reviews">Будьте первым, кто оставит отзыв</div>
+    {{/if}}
+  </div>
+  {{> form}}
+</div>

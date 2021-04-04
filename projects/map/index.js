@@ -1,12 +1,21 @@
 import './index.html';
 import './main.css';
+import template from './templates/popup.hbs';
+
 
 const date = new Date();
 const dateNow = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
 const storage = localStorage;
-const coords = [];
-const reviews = storage.data ? [JSON.parse(storage.data)] : [];
-// console.log(reviews);
+const reviews = storage.data ? JSON.parse(storage.data) : [];
+
+function formDataToJson(form) {
+    console.log(form);
+    const formData = new FormData(form);
+    return Array.from(formData.entries()).reduce((memo, pair) => ({
+        ...memo,
+        [pair[0]]: pair[1],
+    }), {});
+}
 
 function init() {
     let myMap = new ymaps.Map(
@@ -26,73 +35,80 @@ function init() {
             balloonMaxWidth: 310,
         }
     );
-    const collection = new ymaps.GeoObjectCollection(null, {
-        preset: 'islands#yellowIcon'
+
+    const clusterer = new ymaps.Clusterer({
+        "preset": "islands#yellowClusterIcons",
+        "groupByCoordinates": true,
+        "clusterDisableClickZoom": true,
+        "hasBalloon": false,
     });
-    coords.forEach((item) => {
-        addCollection(item.coord);
-    })
 
-    const balloonContent = [
-        '<h2>Отзыв:</h2>',
-        '<input type="text" class="name input" placeholder="Укажите ваше имя">',
-        '<input type="text" class="place input" placeholder="Укажите место">',
-        '<textarea class="textarea input" placeholder="Оставить отзыв"></textarea>',
-        '<button class="save-btn">Добавить</button>',
-        '<button class="del" style="margin-left: 10px">очитстить память</button>',
-    ];
+    myMap.geoObjects.add(clusterer);
 
-    console.log('localStorage', storage.data);
-    myMap.events.add('click', (e) => {
-        const coord = e.get('coords');
-        coords.push(coord);
-        myMap.balloon.open(coord, balloonContent.join(''));
-
-        document.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('save-btn')) {
-                const comment = e.target.previousSibling.value;
-                const place = e.target.previousSibling.previousSibling.value;
-                const name = e.target.previousSibling.previousSibling.previousSibling.value;
-                const geocoder = await ymaps.geocode(coord);
-                const address = geocoder.geoObjects.get(0).properties.getAll().text;
-                if (comment !== '' && place !== '' && name !== '') {
-                    reviews.push({
-                        name,
-                        place,
-                        comment,
-                        coord,
-                        address,
-                    });
-                    console.log(reviews[0])
-                    storage.data = JSON.stringify(reviews);
-                    addCollection(coord);
-                    myMap.geoObjects.add(collection);
-                    myMap.balloon.close();
-                }
-            }
-            if (e.target.classList.contains('del')) {
-                storage.clear();
-                console.log('del', storage.data);
-            }
+    reviews.forEach((review, ndx) => {
+        console.log(review, ndx);
+        const placemark = new ymaps.Placemark(JSON.parse(review.coords), {
+            balloonContent: template({
+                address: review.address,
+                coords: review.coords,
+                dateNow,
+                items: reviews.filter((reviewItem) => reviewItem.coords === review.coords)
+            })
         })
+        clusterer.add(placemark);
     })
-    myMap.geoObjects.add(collection);
 
-    function addCollection(a) {
-        reviews.forEach((item) => {
-            let commetnLayout = ['<div class="reviews">',
-                `<span class="reviews__name">${item.name}</span>`,
-                `<span class="reviews__place">${item.place}, ${dateNow}</span>`,
-                `<div class="reviews__text">${item.comment}</div>`,
-                '</div>'
-            ];
-            let placemark = new ymaps.Placemark(a, {
-                balloonContentHeader: commetnLayout.join(''),
-                balloonContentBody: balloonContent.join(''),
-                hintContent: `${item.address}`,
-            });
-            collection.add(placemark);
-        });
-    }
+    myMap.events.add('click', async (e) => {
+        const coord = e.get('coords');
+        const geocoder = await ymaps.geocode(coord);
+        const address = geocoder.geoObjects.get(0).properties.getAll().text;
+        myMap.balloon.open(coord, template({
+            dateNow,
+            address,
+            coords: JSON.stringify(coord)
+        }));
+    });
+
+    clusterer.events.add('click', (e) => {
+        const coords = e.get('target').geometry.getCoordinates();
+        const strCoords = JSON.stringify(coords);
+        if (e.get('target').options.getName() === 'cluster') {
+            let address = '';
+            const filteredReviews = reviews.filter((review) => {
+                if (!address) {
+                    address
+                }
+                return review.coords === strCoords;
+            })
+            myMap.balloon.open(coords, template({
+                coords: strCoords,
+                address,
+                items: filteredReviews,
+            }));
+        }
+    })
+
+    document.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (e.target.dataset.role === "added") {
+            const data = formDataToJson(e.target);
+            reviews.push(data);
+            storage.data = JSON.stringify(reviews);
+
+            const placemark = new ymaps.Placemark(JSON.parse(data.coords), {
+                balloonContent: template({
+                    address: data.address,
+                    coords: data.coords,
+                    items: reviews.filter((review) => review.coords === data.coords)
+                })
+            })
+
+            clusterer.add(placemark);
+            myMap.balloon.close()
+        }
+    })
+
 }
+
+
 ymaps.ready(init);
