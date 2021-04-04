@@ -1,61 +1,48 @@
 import './index.html';
 import './main.css';
 import template from './templates/popup.hbs';
-
-
-const date = new Date();
-const dateNow = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-const storage = localStorage;
-const reviews = storage.data ? JSON.parse(storage.data) : [];
-
-function formDataToJson(form) {
-    console.log(form);
-    const formData = new FormData(form);
-    return Array.from(formData.entries()).reduce((memo, pair) => ({
-        ...memo,
-        [pair[0]]: pair[1],
-    }), {});
-}
+import {
+    mapConfig,
+    clustererConfig,
+    balloonConfig,
+} from './map_configs/';
 
 function init() {
-    let myMap = new ymaps.Map(
-        'map', {
-            center: [45.05812863, 38.98256216],
-            zoom: 14,
-            controls: [
-                'geolocationControl',
-                'searchControl',
-                'trafficControl',
-                'zoomControl',
-                'typeSelector',
-                'fullscreenControl',
-            ],
-            behaviors: ['drag', 'scrollZoom'],
-        }, {
-            balloonMaxWidth: 310,
-        }
-    );
+    const date = new Date();
+    const dateNow = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    const reviews = localStorage.data ? JSON.parse(localStorage.data) : [];
 
-    const clusterer = new ymaps.Clusterer({
-        "preset": "islands#yellowClusterIcons",
-        "groupByCoordinates": true,
-        "clusterDisableClickZoom": true,
-        "hasBalloon": false,
-    });
+    function formDataToJson(form) {
+        const formData = new FormData(form);
+        return Array.from(formData.entries()).reduce((memo, pair) => ({
+            ...memo,
+            [pair[0]]: pair[1],
+        }), {});
+    }
 
+    const filterReviews = (coords) => reviews.filter((review) => review.coords === coords);
+
+    let myMap = new ymaps.Map('map', mapConfig, balloonConfig);
+
+    const clusterer = new ymaps.Clusterer(clustererConfig);
     myMap.geoObjects.add(clusterer);
 
-    reviews.forEach((review) => {
-        const placemark = new ymaps.Placemark(JSON.parse(review.coords), {
+    reviews.forEach(({
+        address,
+        coords
+    }) => {
+        const placemark = new ymaps.Placemark(JSON.parse(coords), {
             balloonContent: template({
-                address: review.address,
-                coords: review.coords,
+                address,
+                coords,
                 dateNow,
-                items: reviews.filter((reviewItem) => reviewItem.coords === review.coords)
+                items: filterReviews(coords)
             })
         })
         clusterer.add(placemark);
     })
+
+
 
     myMap.events.add('click', async (e) => {
         const coord = e.get('coords');
@@ -72,7 +59,7 @@ function init() {
         const coords = e.get('target').geometry.getCoordinates();
         const strCoords = JSON.stringify(coords);
         if (e.get('target').options.getName() === 'cluster') {
-            const items = reviews.filter((reviewItem) => reviewItem.coords === strCoords);
+            const items = filterReviews(strCoords);
             myMap.balloon.open(coords, template({
                 coords: strCoords,
                 address: items[0].address,
@@ -87,22 +74,18 @@ function init() {
         if (e.target.dataset.role === "added") {
             const data = formDataToJson(e.target);
             reviews.push(data);
-            storage.data = JSON.stringify(reviews);
+            localStorage.data = JSON.stringify(reviews);
 
             const placemark = new ymaps.Placemark(JSON.parse(data.coords), {
                 balloonContent: template({
                     address: data.address,
                     coords: data.coords,
-                    items: reviews.filter((review) => review.coords === data.coords)
+                    items: filterReviews(data.coords)
                 })
             })
-
             clusterer.add(placemark);
             myMap.balloon.close()
         }
     })
-
 }
-
-
 ymaps.ready(init);
