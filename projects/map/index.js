@@ -45,8 +45,7 @@ function init() {
 
     myMap.geoObjects.add(clusterer);
 
-    reviews.forEach((review, ndx) => {
-        console.log(review, ndx);
+    reviews.forEach((review) => {
         const placemark = new ymaps.Placemark(JSON.parse(review.coords), {
             balloonContent: template({
                 address: review.address,
@@ -73,17 +72,12 @@ function init() {
         const coords = e.get('target').geometry.getCoordinates();
         const strCoords = JSON.stringify(coords);
         if (e.get('target').options.getName() === 'cluster') {
-            let address = '';
-            const filteredReviews = reviews.filter((review) => {
-                if (!address) {
-                    address
-                }
-                return review.coords === strCoords;
-            })
+            const items = reviews.filter((reviewItem) => reviewItem.coords === strCoords);
             myMap.balloon.open(coords, template({
                 coords: strCoords,
-                address,
-                items: filteredReviews,
+                address: items[0].address,
+                dateNow,
+                items,
             }));
         }
     })

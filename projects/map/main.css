@@ -56,3 +56,8 @@ textarea {
     box-shadow: 0 0 10px rgba(255, 134, 99, 0.5);
     transition: .3s;
 }
+
+.popup__reviews-wrap {
+    max-height: 110px;
+    overflow: scroll;
+}
