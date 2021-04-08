@@ -73,6 +73,10 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+      },
     ],
   },
   plugins: [
