@@ -1,5 +1,7 @@
 import './index.html';
 import './normalize.css';
 import './main.css';
-import './autorization';
-import './addFoto';
+
+import chat from './chat';
+
+new chat();
