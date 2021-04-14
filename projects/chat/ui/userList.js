@@ -13,7 +13,6 @@ export default class UserList {
       const element = document.createElement('li');
       element.classList.add('members__item');
       element.innerHTML = `
-           <div class="avatar-link"></div>
             <div class="member__name" id="user-name">${name}</div>
       `;
       fragment.append(element);

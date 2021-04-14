@@ -59,6 +59,7 @@ ul {
     flex-grow: 0.2;
     background: #17212B;
     height: 100%;
+    flex-direction: column;
 }
 
 
@@ -88,7 +89,10 @@ ul {
     display: block;
     text-align: center;
 }
-
+.members .avatar-link {
+    margin-left: 25px;
+    margin-top: 75px;
+}
 .members__item:first-child {
     cursor: pointer;
 }
