@@ -1,0 +1,42 @@
+ul {
+    list-style: none;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #FE8663;
+    width: 700px;
+    height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 10px 10px 0 0;
+}
+
+.header {
+    background-color: #FE8663;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border-radius: 9px 10px 0 0;
+}
+
+.filter {
+    display: flex;
+}
+
+.filter__search {
+    width: 80%;
+}
+
+.left, .right {
+    flex: .5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    height: max-content;
+}
+

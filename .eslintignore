@@ -1,7 +1,8 @@
 # Ignore node_modules
 node_modules
 dist
-
+projects
 # Ignore some folders
 benchmark
 coverage
+js_course
