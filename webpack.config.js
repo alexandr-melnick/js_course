@@ -41,7 +41,12 @@ module.exports = {
   },
   mode,
   devServer: {
-    proxy,
+    proxy: {
+      '/server': {
+        target: 'http://localhost:8282',
+        secure: false,
+      },
+    },
   },
   module: {
     rules: [
