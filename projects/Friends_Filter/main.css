@@ -40,3 +40,47 @@ ul {
     height: max-content;
 }
 
+.friends-left, .friends-right {
+    max-height: 325px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.friends-right .friend__swap {
+    border-right: 15px solid #000;
+    border-left: none;
+}
+
+.friend {
+    display: flex;
+    margin-bottom: 5px;
+    align-items: center;
+    background-color: #ccc;
+    border-radius: 5px;
+    justify-content: space-between;
+    width: 290px;
+    height: 50px;
+}
+
+.friend:hover {
+    background-color: blanchedalmond;
+}
+
+.friend__swap {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-left: 15px solid #000;
+    border-bottom: 10px solid transparent;
+    margin-right: 5px;
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.friend__ava {
+    border-radius: 50%;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+
