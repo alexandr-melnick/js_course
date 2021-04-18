@@ -1,0 +1,63 @@
+<div class="wrapper">
+  <div id="regForm" class="reg hidden">
+    <div class=" reg__logo">
+      <img src="./projects/chat/img/authorization.png" alt="logo" class="reg__logo-elem">
+    </div>
+    <h2 class="reg__title">Авторизация</h2>
+    <div class="reg__description">Введите пожалуйста свой ник для дальнейшей авторизации</div>
+      <input type="text" id="regNick" class="reg__nickname" placeholder="Введите ник">
+      <input type="submit" class="reg__submit btn" value="Войти" id="login">
+  </div>
+  <div id="main" class="hidden">
+    <div class="members">
+      <a href="#" class="hamburger">
+        <span class="hamburger__plank"></span>
+        <span class="hamburger__plank"></span>
+        <span class="hamburger__plank"></span>
+      </a>
+      <img src="" class="avatar-link" id="avaImg"/>
+      <ul class="members__list">
+        <li class="members__item">
+            <div class="member__name" id="user-name"></div>
+        </li>
+        <li class="members__item membersList" id="membersList">
+          <div class="membersList__title">Пользователи</div>
+        </li>
+      </ul>
+    </div>
+    <div class="chat">
+      <div class="chat__header">
+        <h2 class="chat__title">Chat</h2>
+        <div class="chat__members">участники</div>
+      </div>
+      <div class="chat__display">
+        <div class="messages">
+<!--          <div class="messages__item">-->
+<!--            <div class="message__nick"></div>-->
+<!--            <div class="message__content">-->
+<!--              <div class="avatar-link">-->
+<!--                <img src="./projects/chat/img/ava.png" class="avatar">-->
+<!--              </div>-->
+<!--              <div class="message__text message">message 1</div>-->
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+      </div>
+      <div class="form">
+        <input type="text" class="input" id="inputMessage" name="message" placeholder="Введите сообщение...">
+        <button class="btn" id="sendMessage">Отправить</button>
+      </div>
+    </div>
+  </div>
+  <div class="loadAva-wrap">
+    <div class="loadAva">
+      <a href="#" class="close">
+        <img src="./projects/chat/img/close.png" alt="close" class="close-el">
+      </a>
+      <div class="loadAva__title">Загрузите фото</div>
+      <a href="#" class="loadAva__img">
+        <img src="./projects/chat/img/ava.png" alt="" class="loadAva__img-el">
+      </a>
+    </div>
+  </div>
+</div>

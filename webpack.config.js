@@ -41,7 +41,14 @@ module.exports = {
   },
   mode,
   devServer: {
-    proxy,
+    proxy: {
+      '/upload-photo': {
+        target: 'http://localhost:8282',
+      },
+      '/photos': {
+        target: 'http://localhost:8282',
+      },
+    },
   },
   module: {
     rules: [
@@ -72,6 +79,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
       },
     ],
   },
