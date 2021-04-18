@@ -38,12 +38,14 @@ ul {
     align-items: center;
     border: 1px solid #ccc;
     height: max-content;
+    align-items: center;
 }
 
 .friends-left, .friends-right {
     max-height: 325px;
     overflow: scroll;
     overflow-x: hidden;
+    padding: 0;
 }
 
 .friends-right .friend__swap {

@@ -7,7 +7,7 @@ export default class FriendsFilter {
     this.allFriendsDOMList = document.querySelector('.friends-left');
     this.bestFriendsDOMList = document.querySelector('.friends-right');
     this.allFriendsDOMFilter = document.querySelector('.filter__search');
-    this.bestFriendsDOMFilter = document.querySelector('.filter__search');
+    this.bestFriendsDOMFilter = document.querySelector('#search-right');
 
     this.api = new vkAPI(7825020, 2);
     this.allFriends = new FriendsList(new VKStorage(this.api));
@@ -39,7 +39,8 @@ export default class FriendsFilter {
     return source.toLowerCase().includes(filter.toLowerCase());
   }
 
-  reloadList(listDOM, friendsList) {
+  reloadList(listDOM, friendsList, filter) {
+    console.log(filter);
     const fragment = document.createDocumentFragment();
 
     listDOM.innerHTML = '';
