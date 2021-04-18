@@ -6,6 +6,7 @@ import UserPhoto from './ui/userPhoto';
 import MessageList from './ui/messageList';
 import MessageSender from './ui/messageSender';
 import WSClient from './wsClient';
+import AddUserPhoto from './ui/addUserPhoto';
 
 export default class chat {
   constructor() {
@@ -28,6 +29,7 @@ export default class chat {
         document.querySelector('.avatar-link'),
         this.onUpload.bind(this)
       ),
+      addUserPhoto: new AddUserPhoto(),
     };
 
     this.ui.loginWindow.show();
@@ -72,15 +74,9 @@ export default class chat {
     } else if (type === 'text-message') {
       this.ui.messageList.add(from, data.message);
     } else if (type === 'photo-changed') {
-      const qwe = document.querySelector(`[data-user=${data?.name}]`);
-      if (!qwe) return;
-      const qweParent = qwe.parentNode;
-      qweParent.removeChild(qwe);
-      const img = document.createElement('img');
-      img.src = `./photos/${data?.name}.png`;
-      img.classList.add('avatar-link');
-      img.setAttribute('data-user', `${data?.name}`);
-      qweParent.insertBefore(img, qweParent.firstChild);
+      const addAva = document.querySelector(`[data-user=${data?.name}]`);
+      if (!addAva) return;
+      this.ui.addUserPhoto.add(addAva, data);
     }
   }
 }
