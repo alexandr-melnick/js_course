@@ -41,25 +41,36 @@ module.exports = {
   },
   mode,
   devServer: {
-    proxy,
+    proxy: {
+      '/server': {
+        target: 'http://localhost:8282',
+        secure: false,
+      },
+    },
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         loader: 'babel-loader',
-        options: { cacheDirectory: true },
+        options: {
+          cacheDirectory: true,
+        },
+        exclude: /(node_modules)/,
       },
       {
         test: /\.html/,
         include: [path.resolve(__dirname, 'projects')],
         use: [
-          { loader: './scripts/html-inject-loader.js' },
+          {
+            loader: './scripts/html-inject-loader.js',
+          },
           {
             loader: 'raw-loader',
           },
         ],
+        exclude: /(node_modules)/,
       },
       {
         test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/i,
@@ -68,10 +79,17 @@ module.exports = {
           name: '[hash:8].[ext]',
           outputPath: 'reosurces',
         },
+        exclude: /(node_modules)/,
       },
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        exclude: /(node_modules)/,
+      },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+        exclude: /(node_modules)/,
       },
     ],
   },
