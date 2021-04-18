@@ -27,6 +27,7 @@ const server = http.createServer(async (req, res) => {
       }
     } else if (req.url.endsWith('/upload-photo')) {
       const body = await readBody(req);
+      console.log(body);
       const name = body.name.replace(/\.\.\/|\//, '');
       const [, content] = body.image.match(/data:image\/.+?;base64,(.+)/) || [];
       const filePath = path.resolve(__dirname, '../photos', `${name}.png`);

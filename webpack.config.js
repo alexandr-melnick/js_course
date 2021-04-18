@@ -42,9 +42,11 @@ module.exports = {
   mode,
   devServer: {
     proxy: {
-      '/server': {
+      '/upload-photo': {
         target: 'http://localhost:8282',
-        secure: false,
+      },
+      '/photos': {
+        target: 'http://localhost:8282',
       },
     },
   },

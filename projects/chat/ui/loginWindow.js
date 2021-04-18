@@ -18,6 +18,8 @@ export default class LoginWindow {
       } else {
         nickName.style.borderBottom = '1px solid red';
       }
+      const avaImg = document.querySelector('#avaImg');
+      avaImg.src = `./photos/${nick}.png`;
     });
   }
 

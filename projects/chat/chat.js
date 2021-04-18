@@ -36,7 +36,7 @@ export default class chat {
   onUpload(data) {
     this.ui.userPhoto.set(data);
 
-    fetch('/js_course/upload-photo', {
+    fetch('/upload-photo', {
       method: 'post',
       body: JSON.stringify({
         name: this.ui.userName.get(),
@@ -59,8 +59,6 @@ export default class chat {
   }
 
   onMessage({ type, from, data }) {
-    console.log(type, from, data);
-
     if (type === 'hello') {
       this.ui.userList.add(from);
       this.ui.messageList.addSystemMessage(`${from} вошел в чат`);
@@ -73,6 +71,16 @@ export default class chat {
       this.ui.messageList.addSystemMessage(`${from} вышел из чата`);
     } else if (type === 'text-message') {
       this.ui.messageList.add(from, data.message);
+    } else if (type === 'photo-changed') {
+      const qwe = document.querySelector(`[data-user=${data?.name}]`);
+      if (!qwe) return;
+      const qweParent = qwe.parentNode;
+      qweParent.removeChild(qwe);
+      const img = document.createElement('img');
+      img.src = `./photos/${data?.name}.png`;
+      img.classList.add('avatar-link');
+      img.setAttribute('data-user', `${data?.name}`);
+      qweParent.insertBefore(img, qweParent.firstChild);
     }
   }
 }

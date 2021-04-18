@@ -20,7 +20,9 @@ export default class MessageList {
             <div class="time">${time}</div>
           </div>
             <div class="message__content">
-              <div class="avatar-link" data-user=${sanitize(from)}></div>
+              <img src="./photos/${from}.png" class="avatar-link" data-user="${sanitize(
+      from
+    )}"/>
               <div class="message__text message">${sanitize(text)}</div>
             </div>
           </div>
